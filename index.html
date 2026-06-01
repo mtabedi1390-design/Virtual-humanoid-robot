@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="اطلس زنده و سه‌بعدی منظومه شمسی با Three.js، WebGPU و طراحی الهام‌گرفته از Google Material 3 Expressive." />
+    <title>Solar System Atlas · WebGPU Material 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Google+Sans+Code:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.webgpu.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"></div>
+    <main class="app-shell" aria-label="مینی‌اپ پیشرفته منظومه شمسی">
+      <nav class="rail glass" aria-label="ناوبری اصلی">
+        <button class="brand" aria-label="نشان Google inspired"><span>G</span></button>
+        <button class="rail__item is-active" data-panel="home" aria-label="خانه">⌂</button>
+        <button class="rail__item" data-open-atlas aria-label="اطلس اجرام">◌</button>
+        <button class="rail__item" data-panel="technology" aria-label="فناوری‌ها">✧</button>
+        <button class="rail__item" data-panel="mission" aria-label="ماموریت">⌁</button>
+        <button class="rail__item" data-open-atlas aria-label="جست‌وجو">⌕</button>
+        <button id="themeToggle" class="avatar" aria-label="تغییر تم"><span></span></button>
+      </nav>
+
+      <section class="hero glass" id="home">
+        <canvas id="spaceCanvas" aria-label="نمای سه‌بعدی زنده منظومه شمسی"></canvas>
+        <div class="render-badge glass" id="renderBadge">WebGPU آماده‌سازی می‌شود…</div>
+
+        <div class="top-actions glass" aria-label="تنظیمات نمایش">
+          <button class="mode is-active" data-theme="light" aria-label="تم روشن">☼</button>
+          <button class="mode" data-theme="dark" aria-label="تم تاریک">☾</button>
+          <button class="mode" data-quality="auto" aria-label="کیفیت خودکار">120</button>
+        </div>
+
+        <section class="hero-copy" aria-labelledby="pageTitle">
+          <p class="kicker">Google Material 3 Expressive · Three.js r180+</p>
+          <h1 id="pageTitle">Solar System</h1>
+          <p class="subtitle">موتور کامل WebGPU: مدار کپلری، LOD پویا، PBR، سایه قمرها، سحابی حجمی و نوردهی تطبیقی.</p>
+          <div class="google-line" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </section>
+
+        <aside class="quick-card glass" id="quickCard" aria-live="polite"></aside>
+        <section class="planet-dock glass" aria-label="انتخاب سریع اجرام"></section>
+      </section>
+
+      <aside class="atlas-sheet glass" id="atlasSheet" aria-label="اطلس کامل اجرام" aria-hidden="true">
+        <div class="sheet-head">
+          <div>
+            <p class="kicker">Complete orbital data</p>
+            <h2>اطلس همه اجرام</h2>
+            <span>داده‌ها آموزشی و گرد شده‌اند؛ مقیاس نمایش برای خوانایی فشرده شده است.</span>
+          </div>
+          <button class="close-sheet" data-close-atlas aria-label="بستن">×</button>
+        </div>
+        <label class="search-field">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="جست‌وجو: زحل، کویپر، قمر، دنباله‌دار..." autocomplete="off" />
+        </label>
+        <div class="filter-row" id="filters" aria-label="فیلتر نوع جرم"></div>
+        <div class="atlas-layout">
+          <div class="object-list" id="cards" aria-live="polite"></div>
+          <article class="detail-card glass" id="detail"></article>
+        </div>
+      </aside>
+    </main>
+
+    <section class="info-strip glass" id="technology" aria-label="فناوری‌های رندر">
+      <article><b>WebGPU + Fallback</b><span>رندرر WebGPU، نور فیزیکی و fallback امن WebGL برای دستگاه‌های قدیمی.</span></article>
+      <article><b>PBR + HDR</b><span>MeshPhysicalMaterial، HDR/PMREM، ACES و exposure تطبیقی نزدیک خورشید.</span></article>
+      <article><b>Kepler + LOD</b><span>مدارهای بیضوی با قانون کپلر و THREE.LOD برای نمای مینیمال تا نزدیک.</span></article>
+      <article><b>Nebula + TAA</b><span>سحابی procedural، particle field، jitter زمانی و DPR cap برای موبایل.</span></article>
+    </section>
+
+    <footer class="run-note glass" id="mission">
+      <b>نحوه اجرا:</b>
+      <code>python3 -m http.server 4173</code>
+      <span>سپس باز کنید: <code>http://localhost:4173</code></span>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
